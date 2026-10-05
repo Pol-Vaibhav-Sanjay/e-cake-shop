@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>E-Cake Shop</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #fff8f5;
+            color: #333;
+        }
+
+        header {
+            background: #6b1e3f;
+            color: white;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 26px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 16px;
+        }
+
+        .hero {
+            min-height: 380px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #ffe1e8, #fff5dc);
+        }
+
+        .hero h2 {
+            font-size: 45px;
+            color: #6b1e3f;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 19px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #6b1e3f;
+            color: white;
+            padding: 13px 28px;
+            border-radius: 25px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .cakes {
+            padding: 50px 8%;
+        }
+
+        .cakes h2 {
+            text-align: center;
+            color: #6b1e3f;
+            margin-bottom: 35px;
+            font-size: 32px;
+        }
+
+        .cake-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .cake-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+
+        .cake-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .cake-image {
+            font-size: 80px;
+            margin-bottom: 15px;
+        }
+
+        .cake-card h3 {
+            color: #6b1e3f;
+            margin-bottom: 8px;
+        }
+
+        .cake-card p {
+            margin-bottom: 8px;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 12px 0;
+        }
+
+        .order {
+            padding: 50px 20px;
+            text-align: center;
+            background: #ffe7ee;
+        }
+
+        .order h2 {
+            color: #6b1e3f;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            background: #6b1e3f;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #message {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🍰 E-Cake Shop</h1>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#cakes">Cakes</a>
+        <a href="#order">Order</a>
+    </nav>
+</header>
+
+<section class="hero" id="home">
+    <div>
+        <h2>Fresh & Delicious Cakes</h2>
+
+        <p>
+            Celebrate every special moment with our delicious cakes.
+        </p>
+
+        <a href="#cakes" class="btn">Explore Cakes</a>
+    </div>
+</section>
+
+<section class="cakes" id="cakes">
+
+    <h2>Our Cakes</h2>
+
+    <div class="cake-container" id="cakeContainer">
+
+        <!-- Cakes will load from Spring Boot API -->
+
+    </div>
+
+</section>
+
+<section class="order" id="order">
+
+    <h2>Ready to Order?</h2>
+
+    <p>
+        Choose your favorite cake and make your celebration special!
+    </p>
+
+    <br>
+
+    <button class="btn" onclick="orderCake()">
+        Order Now
+    </button>
+
+    <p id="message"></p>
+
+</section>
+
+<footer>
+    <p>© 2026 E-Cake Shop | Online Cake Ordering System</p>
+</footer>
+
+
+<script>
+
+    // Load cakes from Spring Boot API
+
+    async function loadCakes() {
+
+        try {
+
+            const response = await fetch('/api/cakes');
+
+            const cakes = await response.json();
+
+            const container =
+                document.getElementById('cakeContainer');
+
+            container.innerHTML = '';
+
+            if (cakes.length === 0) {
+
+                container.innerHTML =
+                    '<p>No cakes available.</p>';
+
+                return;
+            }
+
+            cakes.forEach(cake => {
+
+                const card = document.createElement('div');
+
+                card.className = 'cake-card';
+
+                card.innerHTML = `
+
+                    <div class="cake-image">
+                        🍰
+                    </div>
+
+                    <h3>${cake.name}</h3>
+
+                    <p>${cake.flavor}</p>
+
+                    <p>${cake.size}</p>
+
+                    <div class="price">
+                        ₹${cake.price}
+                    </div>
+
+                    <button
+                        class="btn"
+                        onclick="selectCake('${cake.name}')">
+                        Order
+                    </button>
+
+                `;
+
+                container.appendChild(card);
+
+            });
+
+        } catch (error) {
+
+            console.error(error);
+
+            document.getElementById('cakeContainer').innerHTML =
+                '<p>Unable to load cakes.</p>';
+        }
+    }
+
+
+    function selectCake(name) {
+
+        document.getElementById('message').innerText =
+            name + ' selected! Please click Order Now.';
+
+        document.getElementById('order')
+            .scrollIntoView({
+                behavior: 'smooth'
+            });
+    }
+
+
+    function orderCake() {
+
+        document.getElementById('message').innerText =
+            'Thank you! Your order request has been received.';
+
+    }
+
+
+    // Load cakes when page opens
+
+    loadCakes();
+
+</script>
+
+</body>
+</html>

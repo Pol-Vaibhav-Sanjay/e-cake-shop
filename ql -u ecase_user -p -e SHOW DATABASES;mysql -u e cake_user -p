@@ -1,0 +1,14 @@
+[0;1;32m●[0m mysql.service - MySQL Community Server
+     Loaded: loaded (]8;;file://ip-172-31-11-113/usr/lib/systemd/system/mysql.service\/usr/lib/systemd/system/mysql.service]8;;\; [0;1;32menabled[0m; preset: [0;1;32menabled[0m)
+     Active: [0;1;32mactive (running)[0m since Mon 2026-10-05 14:23:16 UTC; 3h 31min ago
+ Invocation: 7657b8eab4a14dc486f134ee45780c17
+   Main PID: 7028 (mysqld)
+     Status: "[0;1;36mServer is operational[0m"
+      Tasks: 43[0;38:5:245m (limit: 8157)[0m
+     Memory: 481.3M (peak: 482M)
+        CPU: 1min 14.205s
+     CGroup: /system.slice/mysql.service
+             └─[0;38:5:245m7028 /usr/sbin/mysqld[0m
+
+Oct 05 14:23:15 ip-172-31-11-113 systemd[1]: Starting mysql.service - MySQL Community Server...
+Oct 05 14:23:16 ip-172-31-11-113 systemd[1]: Started mysql.service - MySQL Community Server.
